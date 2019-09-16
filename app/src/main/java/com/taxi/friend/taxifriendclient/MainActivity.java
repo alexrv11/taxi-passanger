@@ -300,15 +300,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         DriverLocation driver = drivers.get(i);
                         double latitude = driver.getLatitude();
                         double longitude = driver.getLongitude();
-                        Log.i("taxi", "taxi" + driver.getId());
+                        Log.i("taxiitem", "taxi item" + driver.getId());
 
                         ClusterDriver driverMarker = new ClusterDriver(new LatLng(latitude, longitude),
                                 driver.getName(),"", R.mipmap.ic_taxi_free, driver);
 
-                        /*map.addMarker(new MarkerOptions()
-                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_taxi_free))
-                                .position(new LatLng(latitude, longitude)).title(driver.getName()))
-                                 .setRotation(driver.getDirection());*/
                         clusterManager.addItem(driverMarker);
                     }
 
