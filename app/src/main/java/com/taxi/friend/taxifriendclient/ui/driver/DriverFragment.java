@@ -20,7 +20,6 @@ public class DriverFragment extends Fragment {
 
     private DriverViewModel mViewModel;
     private ViewPager viewPager;
-    private DriverPagerAdapter adapter;
 
     public static DriverFragment newInstance() {
         return new DriverFragment();
@@ -32,16 +31,6 @@ public class DriverFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.driver_fragment, container, false);
 
-
-        viewPager = view.findViewById(R.id.driver_pager);
-
-        List<DriverPicture> images = new ArrayList<>();
-        images.add(new DriverPicture("test 1"));
-        images.add(new DriverPicture("test 2"));
-        images.add(new DriverPicture("test 3"));
-
-        adapter = new DriverPagerAdapter(inflater.getContext(), images);
-        viewPager.setAdapter(adapter);
 
         return view;
     }
