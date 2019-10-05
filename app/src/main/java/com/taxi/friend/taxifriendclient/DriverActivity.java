@@ -8,8 +8,6 @@ import com.taxi.friend.taxifriendclient.ui.driver.DriverFragment;
 
 public class DriverActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
