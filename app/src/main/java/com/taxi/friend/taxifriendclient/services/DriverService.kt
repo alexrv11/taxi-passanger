@@ -1,24 +1,21 @@
-package com.taxi.friend.taxifriendclient.services;
+package com.taxi.friend.taxifriendclient.services
 
 
-import com.taxi.friend.taxifriendclient.models.DriverLocation;
-import com.taxi.friend.taxifriendclient.models.ResponseWrapper;
-import com.taxi.friend.taxifriendclient.repositories.DriverRepository;
-import com.taxi.friend.taxifriendclient.repositories.RestClient;
+import com.taxi.friend.taxifriendclient.models.DriverLocation
+import com.taxi.friend.taxifriendclient.models.ResponseWrapper
+import com.taxi.friend.taxifriendclient.repositories.DriverRepository
+import com.taxi.friend.taxifriendclient.repositories.RestClient
 
-import java.util.List;
+import retrofit2.Call
 
-import retrofit2.Call;
-
-public class DriverService {
+class DriverService {
 
 
+    @Throws(Exception::class)
+    fun getDrivers(radio: Double, latitude: Double, longitude: Double): Call<ResponseWrapper<List<DriverLocation>>> {
 
-    public Call<ResponseWrapper<List<DriverLocation>>> getDrivers(double radio, double latitude, double longitude) throws Exception {
-
-        DriverRepository service = RestClient.createRestClient().create(DriverRepository.class);
-        Call<ResponseWrapper<List<DriverLocation>>> result = service.getDrivers(radio, latitude, longitude);
-        return result;
+        val service = RestClient.createRestClient().create(DriverRepository::class.java)
+        return service.getDrivers(radio, latitude, longitude)
     }
 
     /*
@@ -28,7 +25,7 @@ public class DriverService {
         return service.updateLocation(driverId, new com.taxi.friend.drivers.models.Location(location.getLatitude(), location.getLongitude()));
     }*/
 
-/*
+    /*
     public void getDriver(String driverId){
         DriverRepository repository = RestClient.createRestClient().create(DriverRepository.class);
 

@@ -14,7 +14,7 @@ public class DriverActivity extends AppCompatActivity {
         setContentView(R.layout.driver_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, DriverFragment.newInstance())
+                    .replace(R.id.container, DriverFragment.Companion.newInstance())
                     .commitNow();
         }
 
