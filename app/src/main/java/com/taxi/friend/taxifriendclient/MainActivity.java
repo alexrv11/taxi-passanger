@@ -4,12 +4,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
-import android.provider.SyncStateContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -40,7 +40,6 @@ import com.taxi.friend.taxifriendclient.utils.GPSCoordinate;
 import com.taxi.friend.taxifriendclient.utils.LatLngInterpolator;
 import com.taxi.friend.taxifriendclient.utils.MarkerAnimation;
 
-import java.net.HttpURLConnection;
 import java.util.List;
 
 import retrofit2.Call;
