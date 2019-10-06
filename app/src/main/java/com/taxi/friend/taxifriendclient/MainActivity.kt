@@ -43,10 +43,10 @@ import retrofit2.Response
 
 class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    internal var map: GoogleMap
+    private var map: GoogleMap? = null
     private var googleApiClient: GoogleApiClient? = null
-    internal var lastMarker: Marker? = null
-    internal var mFusedLocationClient: FusedLocationProviderClient? = null
+    private var lastMarker: Marker? = null
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var lastLocation: Location? = null
     private var locationCallback: LocationCallback? = null
     private var locationRequest: LocationRequest? = null
@@ -105,7 +105,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            MY_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            MY_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 buildGoogleApiclient()
                 createLocationRequest()
@@ -120,15 +120,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
             return
         }
         map = googleMap
-        map.isMyLocationEnabled = true
+        map!!.isMyLocationEnabled = true
         clusterManager = ClusterManager(this.applicationContext, map)
-        driverManagerRenderer = ClusterDriverManagerRenderer(this.applicationContext, map, clusterManager)
+        driverManagerRenderer = ClusterDriverManagerRenderer(this.applicationContext, map!!, clusterManager!!)
         clusterManager!!.renderer = driverManagerRenderer
 
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
-            val success = map.setMapStyle(
+            val success = map!!.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.mapstyle))
 
@@ -201,9 +201,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         }
 
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f))
+        map!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f))
         if (lastMarker == null)
-            lastMarker = map.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(latLng))
+            lastMarker = map!!.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(latLng))
         else
             MarkerAnimation.animateMarkerToGB(lastMarker!!, latLng, LatLngInterpolator.Spherical())
     }
