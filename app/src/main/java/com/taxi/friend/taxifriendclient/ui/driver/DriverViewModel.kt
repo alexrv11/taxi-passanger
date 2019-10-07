@@ -13,7 +13,17 @@ class DriverViewModel : ViewModel() {
 
         if (driver == null) {
             driver = MutableLiveData()
-            driver!!.value = DriverData("test name", "1234nkc")
+            var pictures = ArrayList<String>()
+            pictures.add("picture1")
+            pictures.add("picture2")
+            pictures.add("picture3")
+            pictures.add("picture4")
+            pictures.add("picture5")
+            pictures.add("picture6")
+            pictures.add("picture7")
+            pictures.add("picture8")
+            pictures.add("picture9")
+            driver!!.value = DriverData("test name", "1234nkc", pictures)
         }
 
         return driver
