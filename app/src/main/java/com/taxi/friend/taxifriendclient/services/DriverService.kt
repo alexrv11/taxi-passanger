@@ -1,6 +1,7 @@
 package com.taxi.friend.taxifriendclient.services
 
 
+import com.taxi.friend.taxifriendclient.models.Driver
 import com.taxi.friend.taxifriendclient.models.DriverLocation
 import com.taxi.friend.taxifriendclient.models.ResponseWrapper
 import com.taxi.friend.taxifriendclient.repositories.DriverRepository
@@ -16,6 +17,13 @@ class DriverService {
 
         val service = RestClient.createRestClient().create(DriverRepository::class.java)
         return service.getDrivers(radio, latitude, longitude)
+    }
+
+    @Throws(Exception::class)
+    fun getDriver(id: String): Call<Driver> {
+
+        val service = RestClient.createRestClient().create(DriverRepository::class.java)
+        return service.getDriver(id)
     }
 
     /*

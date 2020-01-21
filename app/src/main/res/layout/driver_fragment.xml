@@ -42,11 +42,13 @@
                         android:orientation="vertical"
                         android:layout_margin="@dimen/margin_container">
                         <TextView
+                            android:id="@+id/name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nombre Conductor"
                             />
                         <TextView
+                            android:id="@+id/identityCar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1234-nck"
@@ -67,14 +69,16 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/Register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnRegister"
+            android:text="Solicitar"
+            android:textColor="#fff"
+            android:background="#000"
+            android:layout_weight="1"
+            android:clickable="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:text="Solicitar">
-
-        </Button>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
