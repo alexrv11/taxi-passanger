@@ -41,8 +41,10 @@ class DriverViewModel(driverId: String) : ViewModel() {
                         var dr = response.body()
                         val name = dr?.name
                         val identityCar = dr?.carIdentity
-                        pictures.add(dr?.backCarPhoto.toString())
-                        pictures.add(dr?.frontCarPhoto.toString())
+                        val backCarPhoto = dr?.backCarPhoto.toString().replace("data:image/jpeg;base64,", "")
+                        val frontCarPhoto = dr?.frontCarPhoto.toString().replace("data:image/jpeg;base64,", "")
+                        pictures.add(backCarPhoto)
+                        pictures.add(frontCarPhoto)
                         pictures.add(dr?.sideCarPhoto.toString())
                         driver.value = DriverData(name, identityCar, pictures)
                     }

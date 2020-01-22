@@ -22,19 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/description"
+            <ImageView
+                android:id="@+id/imagecar"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="Test card"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:textColor="#000"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="8sp"
-                android:autoSizeMaxTextSize="15sp"
                 />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
