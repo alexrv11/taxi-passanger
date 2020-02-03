@@ -1,17 +1,22 @@
 package com.taxi.friend.taxifriendclient.ui.driver
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import com.taxi.friend.taxifriendclient.DriverActivity
 import com.taxi.friend.taxifriendclient.R
+import com.taxi.friend.taxifriendclient.WaitOrderActivity
 import com.taxi.friend.taxifriendclient.models.DriverData
 import kotlinx.android.synthetic.main.driver_fragment.view.*
 
@@ -39,13 +44,21 @@ class DriverFragment : Fragment() {
         val snapHelper : SnapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(view.driverRecycler)
 
+        val orderButton = view.findViewById<Button>(R.id.btnRegister)
+
+        orderButton.setOnClickListener {
+            Log.i("TaxiOrder", "ordering taxi")
+            val intent = Intent(view.context, WaitOrderActivity::class.java)
+            startActivity(intent)
+            getActivity()!!.finish()
+
+        }
 
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
     }
 
     companion object {

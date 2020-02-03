@@ -3,6 +3,8 @@ package com.taxi.friend.taxifriendclient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import com.google.android.gms.maps.model.LatLng
 import com.taxi.friend.taxifriendclient.models.ClusterDriver
 import com.taxi.friend.taxifriendclient.models.Driver
@@ -29,8 +31,7 @@ class DriverActivity : AppCompatActivity() {
         }
 
         val actionBar = supportActionBar
-        actionBar!!.title = "Decile donde quieres ir"
-
+        actionBar!!.title = "Solicita Tu Taxi"
     }
 
 

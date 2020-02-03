@@ -1,6 +1,7 @@
 package com.taxi.friend.taxifriendclient
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
@@ -27,7 +28,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener
+import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
 import com.taxi.friend.taxifriendclient.models.ClusterDriver
 import com.taxi.friend.taxifriendclient.models.DriverLocation
 import com.taxi.friend.taxifriendclient.models.ResponseWrapper
@@ -41,7 +45,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  OnClusterItemClickListener<ClusterDriver>, OnClusterClickListener<ClusterDriver> {
+
 
     private var map: GoogleMap? = null
     private var googleApiClient: GoogleApiClient? = null
@@ -80,12 +85,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                         val lon2 = location.longitude
                         val lat1 = lastLocation!!.latitude
                         val lon1 = lastLocation!!.longitude
-                        if (GPSCoordinate.distanceInMeterBetweenEarthCoordinates(lat2, lon2, lat1, lon1) > MIN_DISTANCE) {
+                        val diff = GPSCoordinate.distanceInMeterBetweenEarthCoordinates(lat2, lon2, lat1, lon1)
+                        if (diff > MIN_DISTANCE) {
 
                             lastLocation = location
 
                             displayLocation()
-                            //updateDriverLocation();
+                            //updateDriverLocation()
 
                         }
                     }
@@ -101,6 +107,21 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         displayLocation()
         displayDrivers()
 
+    }
+
+    override fun onClusterClick(p0: Cluster<ClusterDriver>?): Boolean {
+        Log.i("TaxiClick", "click event")
+
+        return true
+    }
+
+    override fun onClusterItemClick(driver: ClusterDriver?): Boolean {
+        Log.i("TaxiClick", "click event")
+        val intent = Intent(this, DriverActivity::class.java)
+        intent.putExtra("driverId", driver!!.driver!!.id)
+        startActivity(intent)
+
+        return true
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -121,9 +142,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         }
         map = googleMap
         map!!.isMyLocationEnabled = true
-        clusterManager = ClusterManager(this.applicationContext, map)
-        driverManagerRenderer = ClusterDriverManagerRenderer(this.applicationContext, map!!, clusterManager!!)
+        clusterManager = ClusterManager(this, map)
+        map.let { node -> node?.setOnMarkerClickListener(clusterManager)}
+
+        driverManagerRenderer = ClusterDriverManagerRenderer(this, map!!, clusterManager!!)
         clusterManager!!.renderer = driverManagerRenderer
+        clusterManager!!.setOnClusterItemClickListener(this)
+        clusterManager!!.setOnClusterClickListener(this)
 
         try {
             // Customise the styling of the base map using a JSON object defined
@@ -154,7 +179,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                 .setInterval(5000)
                 .setFastestInterval(1000)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-
 
         mFusedLocationClient!!.requestLocationUpdates(locationRequest,
                 locationCallback!!, null)
@@ -261,9 +285,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                     val drivers = response.body()!!.result
                     for (i in drivers!!.indices) {
                         val driver = drivers[i]
-                        val latitude = driver.latitude!!
+                        val latitude = driver.latitude
                         val longitude = driver.longitude
-                        Log.i("taxiitem", "taxi item" + driver.id!!)
+                        Log.i("taxiitem", "taxi item" + driver.id)
 
                         val driverMarker = ClusterDriver(LatLng(latitude, longitude),
                                 driver.name, "", R.mipmap.ic_taxi_free, driver)
@@ -295,8 +319,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         private val MIN_DISTANCE = 8
     }
 
-
-    /*private void updateDriverLocation(){
+/*
+    private void updateDriverLocation(){
         try{
             DriverService service = new DriverService();
             Call<String> callUpdate = service.updateLocation(TaxiGlobalInfo.DriverId, lastLocation);
@@ -323,5 +347,4 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         }
     }
 */
-
 }
