@@ -45,7 +45,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  OnClusterItemClickListener<ClusterDriver>, OnClusterClickListener<ClusterDriver> {
+class RideActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,  OnClusterItemClickListener<ClusterDriver>, OnClusterClickListener<ClusterDriver> {
 
 
     private var map: GoogleMap? = null
@@ -59,11 +59,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
     private var clusterManager: ClusterManager<ClusterDriver>? = null
     private var driverManagerRenderer: ClusterDriverManagerRenderer? = null
 
-    private var isZoom: Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_ride)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
 
@@ -80,15 +78,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                 for (location in locationResult.locations) {
                     if (lastLocation == null) {
                         lastLocation = location
-
+                        PassangerInfo.location = com.taxi.friend.taxifriendclient.models.Location(location.latitude, location.longitude)
                     }
 
                     if (location != null) {
-                        if (!isZoom) {
-                            changeZoom()
-                            isZoom = true
-                        }
-
                         val lat2 = location.latitude
                         val lon2 = location.longitude
                         val lat1 = lastLocation!!.latitude
@@ -97,8 +90,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                         if (diff > MIN_DISTANCE) {
 
                             lastLocation = location
-
-
+                            PassangerInfo.location = com.taxi.friend.taxifriendclient.models.Location(location.latitude, location.longitude)
                             displayLocation()
                             //updateDriverLocation()
 
@@ -114,7 +106,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
 
         setUpLocation()
         displayLocation()
-        displayDrivers()
+        //displayDrivers()
 
     }
 
@@ -140,7 +132,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                 buildGoogleApiclient()
                 createLocationRequest()
                 displayLocation()
-                displayDrivers()
+                //displayDrivers()
             }
         }
     }
@@ -153,8 +145,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
         map!!.isMyLocationEnabled = true
         clusterManager = ClusterManager(this, map)
         map.let { node -> node?.setOnMarkerClickListener(clusterManager)}
-
-        changeZoom()
 
         driverManagerRenderer = ClusterDriverManagerRenderer(this, map!!, clusterManager!!)
         clusterManager!!.renderer = driverManagerRenderer
@@ -177,19 +167,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
 
 
         displayLocation()
-        displayDrivers()
-    }
-
-    private fun changeZoom(){
-        if(lastLocation != null) {
-            val latitude = lastLocation!!.latitude
-            val longitude = lastLocation!!.longitude
-            val center = LatLng(
-                    latitude,
-                    longitude
-            )
-            map!!.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 15.0f))
-        }
+        //displayDrivers()
     }
 
     private fun startLocationUpdates() {
@@ -279,8 +257,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
 
     override fun onLocationChanged(location: Location) {
         lastLocation = location
+        PassangerInfo.location = com.taxi.friend.taxifriendclient.models.Location(location.latitude, location.longitude)
         displayLocation()
-        displayDrivers()
+        //displayDrivers()
     }
 
     override fun onStop() {
@@ -312,10 +291,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleApiClient.Con
                         val longitude = driver.longitude
                         Log.i("taxiitem", "taxi item" + driver.id)
 
-                        val driverMarker = ClusterDriver(LatLng(latitude, longitude),
-                                driver.name, "", R.mipmap.ic_taxi_free, driver, driver.direction)
+                        /*val driverMarker = ClusterDriver(LatLng(latitude, longitude),
+                                driver.name, "", R.mipmap.ic_taxi_free, driver)
 
-                        clusterManager!!.addItem(driverMarker)
+                        clusterManager!!.addItem(driverMarker)*/
                     }
 
                     clusterManager!!.cluster()

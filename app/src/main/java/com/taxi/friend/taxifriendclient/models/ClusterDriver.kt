@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 
 
-class ClusterDriver(private var position: LatLng?, private var title: String?, private var snippet: String?, var iconPicture: Int, var driver: DriverLocation?) : ClusterItem {
+class ClusterDriver(private var position: LatLng?, private var title: String?, private var snippet: String?, var iconPicture: Int, var driver: DriverLocation?, val rotation: Int) : ClusterItem {
 
     override fun getPosition(): LatLng? {
         return position

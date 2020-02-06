@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DriverActivity" android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".WaitOrderActivity" android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".RideActivity" android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MainActivity">
 
             <intent-filter>

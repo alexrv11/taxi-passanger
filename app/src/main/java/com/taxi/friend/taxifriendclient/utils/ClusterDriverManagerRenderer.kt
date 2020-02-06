@@ -36,7 +36,8 @@ class ClusterDriverManagerRenderer(context: Context, map: GoogleMap, clusterMana
     override fun onBeforeClusterItemRendered(item: ClusterDriver, markerOptions: MarkerOptions) {
         imageView.setImageResource(item.iconPicture)
         val icon = iconGenerator.makeIcon()
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(item.title)
+        val rot = item.rotation.toFloat()
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(item.title).rotation(rot)
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<ClusterDriver>): Boolean {

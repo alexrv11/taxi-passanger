@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.taxi.friend.taxifriendclient.DriverActivity
+import com.taxi.friend.taxifriendclient.PassangerInfo
 import com.taxi.friend.taxifriendclient.R
 import com.taxi.friend.taxifriendclient.WaitOrderActivity
 import com.taxi.friend.taxifriendclient.models.DriverData
 import kotlinx.android.synthetic.main.driver_fragment.view.*
+import java.lang.Exception
 
 class DriverFragment : Fragment() {
     val driverId: String = "070f886c-ae24-4a2d-a252-9f9c3df7c399"
@@ -48,14 +50,16 @@ class DriverFragment : Fragment() {
 
         orderButton.setOnClickListener {
             Log.i("TaxiOrder", "ordering taxi")
+            PassangerInfo.driverId = driverId
             val intent = Intent(view.context, WaitOrderActivity::class.java)
             startActivity(intent)
-            getActivity()!!.finish()
+            activity!!.finish()
 
         }
 
         return view
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
